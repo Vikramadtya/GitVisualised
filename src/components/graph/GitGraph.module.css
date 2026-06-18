@@ -1,0 +1,141 @@
+.graphContainer {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.node {
+  fill: var(--color-bg-base);
+  stroke: var(--color-accent-primary);
+  stroke-width: 4px;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.node:hover {
+  filter: drop-shadow(0 0 10px var(--color-accent-primary));
+}
+
+.edge {
+  fill: none;
+  stroke: var(--color-border-focus);
+  stroke-width: 2px;
+}
+
+.node.dangling {
+  stroke: var(--color-border-default);
+  stroke-dasharray: 4;
+  opacity: 0.5;
+}
+
+.nodeLabel.dangling {
+  fill: var(--color-border-default);
+  opacity: 0.5;
+}
+
+.edge.dangling {
+  stroke: var(--color-border-default);
+  stroke-dasharray: 4;
+  opacity: 0.3;
+}
+
+.node.remote {
+  stroke: var(--color-accent-remote);
+  stroke-dasharray: 4;
+}
+
+.edge.remote {
+  stroke: var(--color-accent-remote);
+  stroke-dasharray: 4;
+  opacity: 0.6;
+}
+
+.nodeLabel {
+  fill: var(--color-text-secondary);
+  font-family: var(--font-family-mono);
+  font-size: 12px;
+  text-anchor: middle;
+}
+
+.branchTagBg {
+  stroke: var(--color-bg-base);
+  stroke-width: 2px;
+}
+
+.branchTagText {
+  fill: var(--color-bg-base);
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+  font-weight: bold;
+  text-anchor: middle;
+}
+
+.fileAreas {
+  position: absolute;
+  top: var(--spacing-4);
+  right: var(--spacing-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  width: 250px;
+}
+
+.areaBox {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px dashed var(--color-border-focus);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-4);
+}
+
+.areaBox h4 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-2);
+}
+
+.fileList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  min-height: 30px;
+}
+
+.fileItem {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-mono);
+  font-size: 0.8rem;
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+}
+
+.fileItem.staged {
+  border-color: var(--color-accent-success);
+  background: rgba(63, 185, 80, 0.1);
+}
+
+.fileItem.conflicted {
+  border-color: var(--color-accent-danger);
+  background: rgba(248, 81, 73, 0.1);
+}
+
+.emptyText {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.node.remote {
+  stroke: var(--color-accent-remote);
+  stroke-dasharray: 4;
+}

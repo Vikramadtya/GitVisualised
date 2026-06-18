@@ -1,0 +1,32 @@
+.backgroundContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background-color: var(--color-bg-base);
+}
+
+.gridOverlay {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 50% 50%, rgba(0, 112, 243, 0.05) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(188, 140, 255, 0.05) 0%, transparent 40%);
+  z-index: 0;
+}
+
+.mouseSpotlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}

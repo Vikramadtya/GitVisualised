@@ -1,0 +1,205 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-8) var(--spacing-6);
+}
+
+.header {
+  margin-bottom: var(--spacing-10);
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 3rem;
+  margin-bottom: var(--spacing-4);
+}
+
+.header p {
+  color: var(--color-text-secondary);
+  font-size: 1.1rem;
+  margin-bottom: var(--spacing-8);
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+  align-items: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.searchBox {
+  position: relative;
+  width: 100%;
+}
+
+.searchIcon {
+  position: absolute;
+  left: var(--spacing-4);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+}
+
+.searchInput {
+  width: 100%;
+  padding: var(--spacing-4) var(--spacing-4) var(--spacing-4) var(--spacing-12);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-default);
+  background: var(--color-bg-overlay);
+  color: var(--color-text-primary);
+  font-size: 1.1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.searchInput:focus {
+  border-color: var(--color-accent-secondary);
+  box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2);
+}
+
+.filters {
+  display: flex;
+  gap: var(--spacing-2);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.filterBtn {
+  background: var(--color-bg-overlay);
+  border: 1px solid var(--color-border-default);
+  color: var(--color-text-secondary);
+  padding: var(--spacing-2) var(--spacing-4);
+  border-radius: var(--radius-pill);
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.filterBtn:hover {
+  background: var(--color-bg-overlay-hover);
+  color: var(--color-text-primary);
+}
+
+.filterBtn.active {
+  background: var(--color-accent-secondary);
+  color: var(--color-bg-base);
+  border-color: var(--color-accent-secondary);
+}
+
+/* Grid Layout */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: var(--spacing-6);
+}
+
+.card {
+  padding: var(--spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardHeader h2 {
+  font-size: 1.5rem;
+}
+
+.badge {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+.beginner { background: rgba(63, 185, 80, 0.15); color: var(--color-accent-success); }
+.intermediate { background: rgba(210, 153, 34, 0.15); color: var(--color-accent-warning); }
+.advanced { background: rgba(248, 81, 73, 0.15); color: var(--color-accent-danger); }
+
+.synopsis {
+  background: rgba(0,0,0,0.3);
+  padding: var(--spacing-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-subtle);
+  color: var(--color-accent-secondary);
+}
+
+.description {
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.section h3 {
+  font-size: 1rem;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-2);
+}
+
+.flagList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.flagList li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.flagList code {
+  color: var(--color-accent-primary);
+  font-weight: 600;
+}
+
+.flagList span {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.alert {
+  display: flex;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  margin-top: auto;
+}
+
+.alert.danger {
+  background: rgba(248, 81, 73, 0.1);
+  color: var(--color-accent-danger);
+  border: 1px solid rgba(248, 81, 73, 0.2);
+}
+
+.alert.tip {
+  background: rgba(88, 166, 255, 0.1);
+  color: var(--color-accent-secondary);
+  border: 1px solid rgba(88, 166, 255, 0.2);
+}
+
+.readMore {
+  margin-top: var(--spacing-4);
+  text-align: right;
+  font-size: 0.9rem;
+  color: var(--color-accent-primary);
+  font-weight: 500;
+}
+
+.readMore span {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.card:hover .readMore span {
+  transform: translateX(4px);
+}

@@ -1,0 +1,120 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+}
+
+.paletteContainer {
+  position: fixed;
+  top: 20vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 600px;
+  background: var(--color-bg-base);
+  border: 1px solid var(--color-border-muted);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.05);
+  z-index: 1001;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.searchInputWrapper {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-4);
+  border-bottom: 1px solid var(--color-border-muted);
+}
+
+.searchIcon {
+  color: var(--color-text-secondary);
+  margin-right: var(--spacing-3);
+}
+
+.searchInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  font-size: 1.2rem;
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.5;
+}
+
+.resultsList {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: var(--spacing-2);
+}
+
+.resultItem {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: all 0.1s ease;
+}
+
+.resultItem.selected {
+  background: var(--color-bg-overlay);
+  color: var(--color-text);
+  border-left: 3px solid var(--color-accent-primary);
+}
+
+.itemIcon {
+  margin-right: var(--spacing-3);
+  display: flex;
+  align-items: center;
+  color: var(--color-accent-primary);
+}
+
+.itemTitle {
+  flex: 1;
+  font-weight: 500;
+}
+
+.itemType {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.5;
+}
+
+.noResults {
+  padding: var(--spacing-6);
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-6);
+  padding: var(--spacing-3);
+  background: var(--color-bg-overlay);
+  border-top: 1px solid var(--color-border-muted);
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+.footer kbd {
+  background: var(--color-bg-base);
+  border: 1px solid var(--color-border-muted);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: inherit;
+  font-size: 0.75rem;
+}
