@@ -96,6 +96,7 @@ export const chapters: CurriculumChapter[] = [
     description: 'The esoteric tools that separate seniors from masters.',
     items: [
       { type: 'concept', id: 'git-interactive-staging' },
+      { type: 'scenario', id: 'interactive-staging' },
       { type: 'concept', id: 'git-advanced-search' },
       { type: 'concept', id: 'git-rerere' }
     ]
@@ -107,7 +108,8 @@ export const chapters: CurriculumChapter[] = [
     items: [
       { type: 'concept', id: 'git-config-attributes' },
       { type: 'concept', id: 'git-maintenance' },
-      { type: 'concept', id: 'monorepo-strategies' }
+      { type: 'concept', id: 'monorepo-strategies' },
+      { type: 'scenario', id: 'sparse-checkout-lab' }
     ]
   },
   {
@@ -117,6 +119,7 @@ export const chapters: CurriculumChapter[] = [
     items: [
       { type: 'concept', id: 'git-plumbing-porcelain' },
       { type: 'concept', id: 'git-objects' },
+      { type: 'scenario', id: 'plumbing-lab' },
       { type: 'concept', id: 'git-refspec' }
     ]
   },
@@ -127,7 +130,8 @@ export const chapters: CurriculumChapter[] = [
     items: [
       { type: 'concept', id: 'git-internals' },
       { type: 'concept', id: 'advanced-hooks' },
-      { type: 'concept', id: 'git-submodules' }
+      { type: 'concept', id: 'git-submodules-advanced' },
+      { type: 'scenario', id: 'submodule-lab' }
     ]
   }
 ];

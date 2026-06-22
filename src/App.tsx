@@ -1,16 +1,27 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
+import React, { Suspense } from 'react';
+import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/layout/Navbar';
-import Landing from './pages/Landing';
-import Curriculum from './pages/Curriculum';
-import Reference from './pages/Reference';
-import CommandDetail from './pages/CommandDetail';
-import Playground from './pages/Playground';
-import ConceptDetail from './pages/ConceptDetail';
 import { PageTransition } from './components/layout/PageTransition';
 import DynamicBackground from './components/layout/DynamicBackground';
 import CommandPalette from './components/CommandPalette';
 import styles from './App.module.css';
+
+// Lazy loaded pages
+const Landing = React.lazy(() => import('./pages/Landing'));
+const Curriculum = React.lazy(() => import('./pages/Curriculum'));
+const Reference = React.lazy(() => import('./pages/Reference'));
+const CommandDetail = React.lazy(() => import('./pages/CommandDetail'));
+const Playground = React.lazy(() => import('./pages/Playground'));
+const ConceptDetail = React.lazy(() => import('./pages/ConceptDetail'));
+const NotFound = React.lazy(() => import('./pages/NotFound'));
+
+// Simple loading fallback
+const PageLoader = () => (
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', color: 'var(--color-text-secondary)' }}>
+    Loading...
+  </div>
+);
 
 function App() {
   const location = useLocation();
@@ -22,14 +33,17 @@ function App() {
       <Navbar />
       <main className={styles.mainContent}>
         <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<PageTransition><Landing /></PageTransition>} />
-            <Route path="/learn" element={<PageTransition><Curriculum /></PageTransition>} />
-            <Route path="/learn/concept/:conceptId" element={<PageTransition><ConceptDetail /></PageTransition>} />
-            <Route path="/reference" element={<PageTransition><Reference /></PageTransition>} />
-            <Route path="/reference/:commandId" element={<PageTransition><CommandDetail /></PageTransition>} />
-            <Route path="/playground" element={<PageTransition><Playground /></PageTransition>} />
-          </Routes>
+          <Suspense fallback={<PageLoader />}>
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<PageTransition><Landing /></PageTransition>} />
+              <Route path="/learn" element={<PageTransition><Curriculum /></PageTransition>} />
+              <Route path="/learn/concept/:conceptId" element={<PageTransition><ConceptDetail /></PageTransition>} />
+              <Route path="/reference" element={<PageTransition><Reference /></PageTransition>} />
+              <Route path="/reference/:commandId" element={<PageTransition><CommandDetail /></PageTransition>} />
+              <Route path="/playground" element={<PageTransition><Playground /></PageTransition>} />
+              <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
+            </Routes>
+          </Suspense>
         </AnimatePresence>
       </main>
     </div>

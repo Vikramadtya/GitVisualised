@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 import { motion, AnimatePresence } from 'framer-motion';
 import Terminal from '../components/terminal/Terminal';
 import GitGraph from '../components/graph/GitGraph';
@@ -9,7 +10,7 @@ import { commands } from '../data/commands';
 const Playground: React.FC = () => {
   const { activeScenarioIndex, activeStepIndex, isCompleted, nextScenario, resetScenario } = useScenarioStore();
   const currentScenario = scenarios[activeScenarioIndex];
-  const currentStep = currentScenario.steps[activeStepIndex];
+  const currentStep = currentScenario?.steps[activeStepIndex];
 
   return (
     <div style={{ 
@@ -84,7 +85,7 @@ const Playground: React.FC = () => {
                 {activeScenarioIndex < scenarios.length - 1 && (
                   <button 
                     onClick={nextScenario}
-                    style={{ padding: '8px 16px', background: 'white', border: 'none', color: 'black', borderRadius: 'var(--radius-sm)', fontWeight: 'bold', cursor: 'pointer' }}
+                    style={{ padding: '8px 16px', background: 'var(--color-accent-secondary)', border: 'none', color: '#fff', borderRadius: 'var(--radius-sm)', fontWeight: 'bold', cursor: 'pointer' }}
                   >
                     Next Scenario
                   </button>
@@ -99,9 +100,10 @@ const Playground: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
-                style={{ flex: 1 }}
-                dangerouslySetInnerHTML={{ __html: currentStep.instructionMarkdown.replace(/\n/g, '<br/>') }} 
-              />
+                style={{ flex: 1, overflowY: 'auto' }}
+              >
+                {currentStep && <ReactMarkdown>{currentStep.instructionMarkdown}</ReactMarkdown>}
+              </motion.div>
             </AnimatePresence>
           )}
 

@@ -21,8 +21,8 @@ export interface Scenario {
 // Helper to create empty graph
 const createEmptyGraph = (): GraphState => ({
   commits: [],
-  branches: [{ name: 'master', target: '' }],
-  HEAD: 'master',
+  branches: [{ name: 'main', target: '' }],
+  HEAD: 'main',
   stagingArea: [],
   workingDirectory: [],
   conflictedFiles: []
@@ -1123,10 +1123,10 @@ export const scenarios: Scenario[] = [
         { id: 'c1', parents: ['v1.0'], message: 'Add Feature A', zone: 'local' },
         { id: 'c2', parents: ['c1'], message: 'Refactor Auth (Introduces Bug)', zone: 'local' },
         { id: 'c3', parents: ['c2'], message: 'Add Feature B', zone: 'local' },
-        { id: 'HEAD', parents: ['c3'], message: 'Update Docs', zone: 'local' }
+        { id: 'c-head', parents: ['c3'], message: 'Update Docs', zone: 'local' }
       ],
       branches: [
-        { name: 'main', target: 'HEAD' }
+        { name: 'main', target: 'c-head' }
       ],
       HEAD: 'main',
       stagingArea: [],
@@ -1145,10 +1145,10 @@ export const scenarios: Scenario[] = [
             { id: 'c1', parents: ['v1.0'], message: 'Add Feature A', zone: 'local' },
             { id: 'c2', parents: ['c1'], message: 'Refactor Auth (Introduces Bug)', zone: 'local' },
             { id: 'c3', parents: ['c2'], message: 'Add Feature B', zone: 'local' },
-            { id: 'HEAD', parents: ['c3'], message: 'Update Docs', zone: 'local' }
+            { id: 'c-head', parents: ['c3'], message: 'Update Docs', zone: 'local' }
           ],
           branches: [
-            { name: 'main', target: 'HEAD' }
+            { name: 'main', target: 'c-head' }
           ],
           HEAD: 'main',
           stagingArea: [],
@@ -1168,10 +1168,10 @@ export const scenarios: Scenario[] = [
             { id: 'c1', parents: ['v1.0'], message: 'Add Feature A', zone: 'local' },
             { id: 'c2', parents: ['c1'], message: 'Refactor Auth (Introduces Bug)', zone: 'local' },
             { id: 'c3', parents: ['c2'], message: 'Add Feature B', zone: 'local' },
-            { id: 'HEAD', parents: ['c3'], message: 'Update Docs', zone: 'local' }
+            { id: 'c-head', parents: ['c3'], message: 'Update Docs', zone: 'local' }
           ],
           branches: [
-            { name: 'main', target: 'HEAD' }
+            { name: 'main', target: 'c-head' }
           ],
           HEAD: 'main',
           stagingArea: [],
@@ -1191,10 +1191,10 @@ export const scenarios: Scenario[] = [
             { id: 'c1', parents: ['v1.0'], message: 'Add Feature A', zone: 'local' },
             { id: 'c2', parents: ['c1'], message: 'Refactor Auth (Introduces Bug)', zone: 'local' },
             { id: 'c3', parents: ['c2'], message: 'Add Feature B', zone: 'local' },
-            { id: 'HEAD', parents: ['c3'], message: 'Update Docs', zone: 'local' }
+            { id: 'c-head', parents: ['c3'], message: 'Update Docs', zone: 'local' }
           ],
           branches: [
-            { name: 'main', target: 'HEAD' }
+            { name: 'main', target: 'c-head' }
           ],
           HEAD: 'c2',
           stagingArea: [],
@@ -1214,10 +1214,10 @@ export const scenarios: Scenario[] = [
             { id: 'c1', parents: ['v1.0'], message: 'Add Feature A', zone: 'local' },
             { id: 'c2', parents: ['c1'], message: 'Refactor Auth (Introduces Bug)', zone: 'local' },
             { id: 'c3', parents: ['c2'], message: 'Add Feature B', zone: 'local' },
-            { id: 'HEAD', parents: ['c3'], message: 'Update Docs', zone: 'local' }
+            { id: 'c-head', parents: ['c3'], message: 'Update Docs', zone: 'local' }
           ],
           branches: [
-            { name: 'main', target: 'HEAD' }
+            { name: 'main', target: 'c-head' }
           ],
           HEAD: 'c1',
           stagingArea: [],
@@ -1237,10 +1237,10 @@ export const scenarios: Scenario[] = [
             { id: 'c1', parents: ['v1.0'], message: 'Add Feature A', zone: 'local' },
             { id: 'c2', parents: ['c1'], message: 'Refactor Auth (Introduces Bug)', zone: 'local' },
             { id: 'c3', parents: ['c2'], message: 'Add Feature B', zone: 'local' },
-            { id: 'HEAD', parents: ['c3'], message: 'Update Docs', zone: 'local' }
+            { id: 'c-head', parents: ['c3'], message: 'Update Docs', zone: 'local' }
           ],
           branches: [
-            { name: 'main', target: 'HEAD' }
+            { name: 'main', target: 'c-head' }
           ],
           HEAD: 'c1',
           stagingArea: [],
@@ -1253,7 +1253,7 @@ export const scenarios: Scenario[] = [
   },
   {
     id: 'advanced-merge-conflict',
-    title: '16. Advanced Merge Conflict Resolution',
+    title: '17. Advanced Merge Conflict Resolution',
     description: 'Master resolving deep architectural merge conflicts across multiple branches without losing data.',
     relatedCommands: ['git merge', 'git status', 'git add', 'git commit'],
     initialGraph: {

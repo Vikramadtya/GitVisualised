@@ -607,7 +607,7 @@ If your search is more complex, \`git log -G\` acts like the pickaxe but takes a
     readTime: '4 min',
     illustrationId: 'rerere',
     relatedCommands: ['git config --global rerere.enabled true', 'git rerere'],
-    relatedConcepts: ['merge-conflicts', 'rebase-vs-merge'],
+    relatedConcepts: ['rebase-vs-merge'],
     markdownContent: `
 # Rerere: Reuse Recorded Resolution
 
@@ -878,7 +878,7 @@ Hooks reside in the \`.git/hooks\` directory of your repository. By default, Git
     }
   },
   {
-    id: 'git-submodules',
+    id: 'git-submodules-advanced',
     title: 'Submodules & Monorepos',
     description: 'Strategies for managing repositories within repositories.',
     markdownContent: `# Managing Complexity: Submodules
@@ -902,5 +902,72 @@ In recent years, instead of using submodules, many massive organizations (like G
       correctIndex: 1,
       explanation: 'The parent repo records a specific commit hash for the submodule, not the branch or the files, ensuring strict version locking.'
     }
+  },
+  {
+    id: 'history-analysis',
+    title: 'Advanced History Analysis',
+    description: 'Learn how to filter, search, and analyze Git history like a pro.',
+    readTime: '6 min',
+    relatedCommands: ['git log', 'git rev-list', 'git diff'],
+    markdownContent: `
+# Advanced History Analysis
+
+When debugging an issue or auditing a repository, simple \`git log\` commands often aren't enough. You need powerful tools to slice and dice the history.
+
+## The Power of \`git log\` Flags
+
+- \`--since="2 weeks ago"\`: Time-based filtering.
+- \`--author="Linus"\`: Filter by who wrote the code.
+- \`--grep="Fix #123"\`: Search within commit messages.
+- \`-S"password"\`: The Pickaxe. Find the commit that introduced or removed a specific string in the codebase.
+- \`--stat\`: See which files were modified and how many lines were added/removed.
+
+> [!TIP]
+> Combine these! \`git log --since="1 month ago" --author="Jane" -S"API_KEY"\` helps you find exactly when Jane modified the API key in the last month.
+    `
+  },
+  {
+    id: 'ci-cd-integrations',
+    title: 'Git in CI/CD',
+    description: 'How Git forms the backbone of continuous integration and continuous deployment pipelines.',
+    readTime: '5 min',
+    relatedCommands: ['git tag', 'git push --tags'],
+    markdownContent: `
+# Git in CI/CD
+
+Continuous Integration (CI) and Continuous Deployment (CD) rely heavily on Git to trigger automated workflows.
+
+## Push Triggers
+Most modern CI/CD systems (GitHub Actions, GitLab CI, Jenkins) trigger pipelines based on Git events:
+- **Push to \`main\`**: Triggers a deployment to production.
+- **Push to a PR branch**: Triggers automated tests and linting.
+- **Pushing a tag**: Triggers a release build.
+
+> [!IMPORTANT]
+> The \`detached HEAD\` state is very common in CI environments. The CI runner typically checks out the specific commit hash rather than a branch to ensure reproducibility.
+    `
+  },
+  {
+    id: 'monorepo-strategies',
+    title: 'Monorepo Strategies',
+    description: 'Managing massive codebases containing multiple projects within a single Git repository.',
+    readTime: '7 min',
+    relatedCommands: ['git sparse-checkout'],
+    markdownContent: `
+# Monorepo Strategies
+
+A monorepo (monolithic repository) is an architectural pattern where multiple distinct projects are kept in a single version-controlled repository. Companies like Google, Meta, and Microsoft use monorepos.
+
+## Challenges of Monorepos
+As a monorepo grows, \`git clone\`, \`git status\`, and \`git fetch\` can become extremely slow because Git tracks every file in every project.
+
+## Git Features for Monorepos
+1. **Sparse Checkout**: Only check out the directories you care about, leaving the rest of the repository out of your working directory.
+2. **Partial Clone (\`--filter=blob:none\`)**: Only download commit metadata. File contents are downloaded on-demand when you actually check them out.
+3. **Scalar & Git FSMonitor**: Tools developed by Microsoft to make Git faster on huge repositories by utilizing background filesystem watchers.
+
+> [!TIP]
+> If you are working in a massive monorepo, always use \`git clone --filter=blob:none\` to save hours of download time.
+    `
   }
 ];
