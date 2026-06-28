@@ -134,4 +134,13 @@ export const chapters: CurriculumChapter[] = [
       { type: 'scenario', id: 'submodule-lab' }
     ]
   }
+,
+  {
+    id: 'ch12',
+    title: 'Chapter 12: Common Mistakes & Escape Hatches',
+    description: 'A dedicated section for recovering from accidental deletions, botched rebases, and more.',
+    items: [
+      { type: 'concept', id: 'common-mistakes' }
+    ]
+  }
 ];

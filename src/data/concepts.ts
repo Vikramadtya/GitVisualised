@@ -970,4 +970,43 @@ As a monorepo grows, \`git clone\`, \`git status\`, and \`git fetch\` can become
 > If you are working in a massive monorepo, always use \`git clone --filter=blob:none\` to save hours of download time.
     `
   }
+,
+  {
+    id: 'common-mistakes',
+    title: 'Common Mistakes & Escape Hatches',
+    description: 'Learn how to recover from accidents like deleting branches or messing up a rebase.',
+    readTime: '8 min',
+    markdownContent: `# Common Mistakes & Escape Hatches
+
+## 1. I deleted a branch by accident!
+Don't panic. Commits are not deleted immediately. You can find the commit hash using \`git reflog\` and then recreate the branch.
+\`bash
+git reflog
+git checkout -b lost-branch <commit-hash>
+\`
+
+## 2. I messed up my rebase!
+If you are in the middle of a bad rebase, just abort it.
+\`bash
+git rebase --abort
+\`
+If the rebase finished but is wrong, use the reflog to reset back to before the rebase started.
+
+## 3. I pushed a commit to the wrong branch!
+If you haven't shared the branch with others, you can just cherry-pick the commit to the right branch, and reset the wrong branch.
+\`bash
+# On wrong branch
+git log -1 --oneline # get hash
+git reset --hard HEAD~1
+git checkout right-branch
+git cherry-pick <hash>
+\`
+`,
+    quiz: {
+      question: 'Which tool is the ultimate safety net for recovering lost commits?',
+      options: ['git status', 'git reflog', 'git bisect', 'git restore'],
+      correctIndex: 1,
+      explanation: 'git reflog records where your HEAD and branch references have been for the last few weeks, allowing you to recover commits that are no longer referenced by any branch.'
+    }
+  }
 ];

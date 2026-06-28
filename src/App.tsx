@@ -14,6 +14,7 @@ const Reference = React.lazy(() => import('./pages/Reference'));
 const CommandDetail = React.lazy(() => import('./pages/CommandDetail'));
 const Playground = React.lazy(() => import('./pages/Playground'));
 const ConceptDetail = React.lazy(() => import('./pages/ConceptDetail'));
+const Cheatsheet = React.lazy(() => import('./pages/Cheatsheet'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 
 // Simple loading fallback
@@ -40,6 +41,7 @@ function App() {
               <Route path="/learn/concept/:conceptId" element={<PageTransition><ConceptDetail /></PageTransition>} />
               <Route path="/reference" element={<PageTransition><Reference /></PageTransition>} />
               <Route path="/reference/:commandId" element={<PageTransition><CommandDetail /></PageTransition>} />
+              <Route path="/cheatsheet" element={<PageTransition><Cheatsheet /></PageTransition>} />
               <Route path="/playground" element={<PageTransition><Playground /></PageTransition>} />
               <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
             </Routes>

@@ -20,24 +20,24 @@ const initialHeroGraph: GraphState = {
 };
 
 const Landing: React.FC = () => {
-  const [heroGraph, setHeroGraph] = useState<GraphState>(initialHeroGraph);
+  const [heroStep, setHeroStep] = useState(0);
+
+  const heroGraph = React.useMemo(() => {
+    const commits = [...initialHeroGraph.commits];
+    for (let i = 0; i < heroStep; i++) {
+      const newCommitId = `c${commits.length + 1}`;
+      commits.push({ id: newCommitId, parents: [commits[commits.length - 1].id], message: `Feature ${newCommitId}` });
+    }
+    return {
+      ...initialHeroGraph,
+      commits,
+      branches: [{ name: 'main', target: commits[commits.length - 1].id }]
+    };
+  }, [heroStep]);
 
   useEffect(() => {
-    // Animate graph adding commits
     const interval = setInterval(() => {
-      setHeroGraph(prev => {
-        if (prev.commits.length > 5) {
-          return initialHeroGraph;
-        }
-        const newCommitId = `c${prev.commits.length + 1}`;
-        const parentId = prev.branches.find(b => b.name === 'main')?.target || 'c1';
-        return {
-          ...prev,
-          commits: [...prev.commits, { id: newCommitId, parents: [parentId], message: `Feature ${newCommitId}` }],
-          branches: [{ name: 'main', target: newCommitId }],
-          HEAD: 'main'
-        };
-      });
+      setHeroStep(prev => (prev >= 3 ? 0 : prev + 1));
     }, 2000);
     return () => clearInterval(interval);
   }, []);
@@ -68,6 +68,10 @@ const Landing: React.FC = () => {
 
         <div className={styles.heroGraphWrapper}>
           <div className={`${styles.heroGraph} glass-panel`}>
+            <div style={{ position: 'absolute', top: 12, left: 16, display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.8rem', color: 'var(--color-text-secondary)', zIndex: 10 }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-accent-success)', animation: 'pulse 2s infinite' }} />
+              Live Git Graph
+            </div>
             <GitGraph customGraph={heroGraph} />
           </div>
         </div>

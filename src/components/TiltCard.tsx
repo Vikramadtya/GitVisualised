@@ -8,7 +8,7 @@ interface TiltCardProps {
   onClick?: () => void;
 }
 
-const TiltCard: React.FC<TiltCardProps> = ({ children, className, style, onClick }) => {
+const TiltCard: React.FC<TiltCardProps> = React.memo(({ children, className, style, onClick }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const x = useMotionValue(0);
@@ -60,6 +60,6 @@ const TiltCard: React.FC<TiltCardProps> = ({ children, className, style, onClick
       {children}
     </motion.div>
   );
-};
+});
 
 export default TiltCard;

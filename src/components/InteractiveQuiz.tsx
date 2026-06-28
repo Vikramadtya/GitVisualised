@@ -11,7 +11,7 @@ interface QuizProps {
   explanation: string;
 }
 
-const InteractiveQuiz: React.FC<QuizProps> = ({ question, options, correctIndex, explanation }) => {
+const InteractiveQuiz: React.FC<QuizProps> = React.memo(({ question, options, correctIndex, explanation }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -31,6 +31,12 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ question, options, correctIndex,
         playErrorSound();
       }
     }
+  };
+
+  const handleTryAgain = () => {
+    playClickSound();
+    setSelectedIndex(null);
+    setIsSubmitted(false);
   };
 
   const isCorrect = selectedIndex === correctIndex;
@@ -93,11 +99,19 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ question, options, correctIndex,
           >
             <h4>{isCorrect ? 'Correct!' : 'Incorrect'}</h4>
             <p>{explanation}</p>
+            {!isCorrect && (
+              <button 
+                onClick={handleTryAgain}
+                style={{ marginTop: 'var(--spacing-3)', padding: '6px 12px', background: 'transparent', border: '1px solid var(--color-danger)', color: 'var(--color-danger)', borderRadius: 'var(--radius-sm)', cursor: 'pointer' }}
+              >
+                Try Again
+              </button>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
-};
+});
 
 export default InteractiveQuiz;

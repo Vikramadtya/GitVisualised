@@ -34,6 +34,7 @@
 }
 
 .navLink {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
@@ -92,4 +93,23 @@
 @keyframes slideIn {
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }
+}
+
+.progressRingWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: var(--spacing-2);
+  width: 36px;
+  height: 36px;
+  cursor: help;
+}
+
+.progressIcon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 }

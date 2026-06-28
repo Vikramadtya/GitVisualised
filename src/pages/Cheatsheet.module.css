@@ -1,0 +1,121 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-8) var(--spacing-4);
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-8);
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  margin-bottom: var(--spacing-2);
+  background: var(--color-gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header p {
+  color: var(--color-text-secondary);
+}
+
+.printBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-4);
+  background: var(--color-bg-overlay);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.printBtn:hover {
+  background: var(--color-accent-primary);
+  border-color: var(--color-accent-primary);
+  color: white;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: var(--spacing-6);
+}
+
+.categorySection {
+  padding: var(--spacing-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-subtle);
+}
+
+.categorySection h2 {
+  font-size: 1.25rem;
+  margin-bottom: var(--spacing-4);
+  color: var(--color-accent-secondary);
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding-bottom: var(--spacing-2);
+}
+
+.cmdTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cmdTable td {
+  padding: var(--spacing-3) 0;
+  border-bottom: 1px dashed var(--color-border-subtle);
+  vertical-align: top;
+}
+
+.cmdTable tr:last-child td {
+  border-bottom: none;
+}
+
+.cmdName {
+  width: 40%;
+  padding-right: var(--spacing-3) !important;
+}
+
+.cmdName code {
+  color: var(--color-accent-primary);
+  font-size: 0.85rem;
+}
+
+.cmdDesc {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+@media print {
+  .container {
+    padding: 0;
+  }
+  .header p, .printBtn {
+    display: none;
+  }
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .categorySection {
+    break-inside: avoid;
+    border: 1px solid #ccc;
+    background: none !important;
+    padding: 15px;
+  }
+  .cmdName code {
+    color: #d32f2f;
+  }
+  * {
+    color: black !important;
+  }
+}

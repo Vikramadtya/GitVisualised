@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Play, Download, BookOpen, Terminal } from 'lucide-react';
+import { Play, Download, BookOpen, Terminal, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { chapters } from '../data/curriculum';
 import { concepts } from '../data/concepts';
 import { scenarios } from '../data/scenarios';
 import { useScenarioStore } from '../store/useScenarioStore';
+import { useProgressStore } from '../store/useProgressStore';
 import TiltCard from '../components/TiltCard';
 import styles from './Curriculum.module.css';
 
@@ -17,18 +18,10 @@ const resources = [
   }
 ];
 
-const itemVariants: any = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 300, damping: 24 }
-  }
-};
-
 const Curriculum: React.FC = () => {
   const navigate = useNavigate();
   const setScenario = useScenarioStore(state => state.setScenario);
+  const { completedConceptIds, completedScenarioIds } = useProgressStore();
 
   const handleStartScenario = (scenarioId: string) => {
     setScenario(scenarioId);
@@ -74,10 +67,18 @@ const Curriculum: React.FC = () => {
                 // Alternate sides for the skill tree
                 const isLeft = index % 2 === 0;
                 const nodeClass = isLeft ? styles.nodeLeft : styles.nodeRight;
+                const isCompleted = isConcept ? completedConceptIds.includes(item.id) : completedScenarioIds.includes(item.id);
 
                 if (isConcept && concept) {
                   return (
-                    <motion.div key={`${chapter.id}-${item.id}-${index}`} variants={itemVariants} className={`${styles.nodeContainer} ${nodeClass}`}>
+                    <motion.div 
+                      key={`${chapter.id}-${item.id}-${index}`} 
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-50px" }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+                      className={`${styles.nodeContainer} ${nodeClass}`}
+                    >
                       <div className={styles.cardWrapper}>
                         <TiltCard>
                           <Link to={`/learn/concept/${concept.id}`} className={`${styles.moduleCard} glass-panel`} style={{ borderLeftColor: 'var(--color-accent-primary)' }}>
@@ -92,7 +93,7 @@ const Curriculum: React.FC = () => {
                               </div>
                             </div>
                             <div className={styles.moduleAction}>
-                              <Play size={20} />
+                              {isCompleted ? <CheckCircle2 size={24} color="var(--color-accent-success)" /> : <Play size={20} />}
                             </div>
                           </Link>
                         </TiltCard>
@@ -103,7 +104,14 @@ const Curriculum: React.FC = () => {
 
                 if (!isConcept && scenario) {
                   return (
-                    <motion.div key={`${chapter.id}-${item.id}-${index}`} variants={itemVariants} className={`${styles.nodeContainer} ${nodeClass}`}>
+                    <motion.div 
+                      key={`${chapter.id}-${item.id}-${index}`} 
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-50px" }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+                      className={`${styles.nodeContainer} ${nodeClass}`}
+                    >
                       <div className={styles.cardWrapper}>
                         <TiltCard>
                           <div 
@@ -125,7 +133,7 @@ const Curriculum: React.FC = () => {
                               </div>
                             </div>
                             <div className={styles.moduleAction}>
-                              <Play size={20} />
+                              {isCompleted ? <CheckCircle2 size={24} color="var(--color-accent-success)" /> : <Terminal size={20} />}
                             </div>
                           </div>
                         </TiltCard>

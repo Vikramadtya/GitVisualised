@@ -13,6 +13,14 @@ const CommandPalette: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [recentItems, setRecentItems] = useState<any[]>(() => {
+    try {
+      const saved = localStorage.getItem('recentPaletteItems');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
   const inputRef = useRef<HTMLInputElement>(null);
   
   const navigate = useNavigate();
@@ -41,15 +49,28 @@ const CommandPalette: React.FC = () => {
     }
   }, [isOpen]);
 
-  const allItems = [
+  const allItems = React.useMemo(() => [
     ...concepts.map(c => ({ type: 'concept', id: c.id, title: c.title, icon: <BookOpen size={16} /> })),
     ...scenarios.map(s => ({ type: 'scenario', id: s.id, title: s.title, icon: <TerminalIcon size={16} /> })),
-    ...commands.map(cmd => ({ type: 'command', id: cmd.name, title: `git ${cmd.name}`, icon: <CommandIcon size={16} /> }))
-  ];
+    ...commands.map(cmd => ({ type: 'command', id: cmd.name, title: cmd.name.startsWith('git ') ? cmd.name : `git ${cmd.name}`, icon: <CommandIcon size={16} /> }))
+  ], []);
 
-  const filteredItems = allItems.filter(item => 
-    item.title.toLowerCase().includes(searchQuery.toLowerCase())
-  ).slice(0, 8); // Show max 8 results
+  const filteredItems = React.useMemo(() => {
+    if (!searchQuery.trim()) {
+      return recentItems.length > 0 ? recentItems : allItems.slice(0, 8);
+    }
+
+    const fuzzyMatch = (pattern: string, str: string) => {
+      let pIdx = 0, sIdx = 0;
+      while (pIdx < pattern.length && sIdx < str.length) {
+        if (pattern[pIdx].toLowerCase() === str[sIdx].toLowerCase()) pIdx++;
+        sIdx++;
+      }
+      return pIdx === pattern.length;
+    };
+
+    return allItems.filter(item => fuzzyMatch(searchQuery, item.title)).slice(0, 8);
+  }, [searchQuery, allItems, recentItems]);
 
   useEffect(() => {
     setSelectedIndex(0);
@@ -58,6 +79,17 @@ const CommandPalette: React.FC = () => {
   const handleSelect = (item: any) => {
     playClickSound();
     setIsOpen(false);
+    
+    // Save to recents
+    setRecentItems(prev => {
+      const filtered = prev.filter(i => i.id !== item.id);
+      // Exclude icon from storage to avoid React element serialization issues
+      const itemToSave = { type: item.type, id: item.id, title: item.title };
+      const updated = [itemToSave, ...filtered].slice(0, 5);
+      localStorage.setItem('recentPaletteItems', JSON.stringify(updated));
+      return updated;
+    });
+
     if (item.type === 'concept') {
       navigate(`/learn/concept/${item.id}`);
     } else if (item.type === 'scenario') {
@@ -96,37 +128,71 @@ const CommandPalette: React.FC = () => {
           />
           <motion.div 
             className={styles.paletteContainer}
-            initial={{ opacity: 0, scale: 0.95, y: -20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: -20 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ duration: 0.15 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Command Palette"
+            onKeyDown={(e) => {
+              // Basic Focus Trap
+              if (e.key === 'Tab') {
+                e.preventDefault();
+              }
+            }}
           >
             <div className={styles.searchInputWrapper}>
-              <Search className={styles.searchIcon} size={20} />
-              <input
+              <Search className={styles.searchIcon} size={20} aria-hidden="true" />
+              <input 
                 ref={inputRef}
-                className={styles.searchInput}
-                placeholder="Search concepts, commands, or labs..."
+                type="text" 
+                placeholder="Search commands, concepts, or labs..." 
                 value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={handleListKeyDown}
+                className={styles.searchInput}
+                aria-label="Search"
+                aria-autocomplete="list"
+                aria-controls="palette-results"
+                aria-activedescendant={filteredItems[selectedIndex] ? `result-${filteredItems[selectedIndex].id}` : undefined}
               />
             </div>
             
             <div className={styles.resultsList}>
               {filteredItems.length > 0 ? (
-                filteredItems.map((item, index) => (
-                  <div 
-                    key={`${item.type}-${item.id}`}
-                    className={`${styles.resultItem} ${index === selectedIndex ? styles.selected : ''}`}
-                    onClick={() => handleSelect(item)}
-                    onMouseEnter={() => setSelectedIndex(index)}
-                  >
-                    <span className={styles.itemIcon}>{item.icon}</span>
-                    <span className={styles.itemTitle}>{item.title}</span>
-                    <span className={styles.itemType}>{item.type}</span>
-                  </div>
-                ))
+                <div className={styles.resultsList} id="palette-results" role="listbox">
+                  {!searchQuery.trim() && recentItems.length > 0 && (
+                    <div style={{ padding: '8px 16px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase' }} aria-hidden="true">
+                      Recent Items
+                    </div>
+                  )}
+                  {filteredItems.map((item, idx) => {
+                    // Re-attach icons for recents
+                    let icon = item.icon;
+                    if (!icon) {
+                      if (item.type === 'concept') icon = <BookOpen size={16} />;
+                      else if (item.type === 'scenario') icon = <TerminalIcon size={16} />;
+                      else icon = <CommandIcon size={16} />;
+                    }
+
+                    return (
+                      <div 
+                        key={item.id}
+                        id={`result-${item.id}`}
+                        role="option"
+                        aria-selected={idx === selectedIndex}
+                        className={`${styles.resultItem} ${idx === selectedIndex ? styles.selected : ''}`}
+                        onClick={() => handleSelect(item)}
+                        onMouseEnter={() => setSelectedIndex(idx)}
+                      >
+                        <span className={styles.itemIcon} aria-hidden="true">{icon}</span>
+                        <span className={styles.itemTitle}>{item.title}</span>
+                        <span className={styles.itemType}>{item.type}</span>
+                      </div>
+                    );
+                  })}
+                </div>
               ) : (
                 <div className={styles.noResults}>No results found for "{searchQuery}"</div>
               )}

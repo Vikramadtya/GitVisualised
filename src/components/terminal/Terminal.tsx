@@ -26,12 +26,19 @@ const Terminal: React.FC = () => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Reset terminal on new scenario
+  const isInitialMount = useRef(true);
+
+  // Reset terminal on new scenario or reset
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    
     if (activeStepIndex === 0) {
       setLines([
-        { id: 'init-1', text: 'Git Visualised v1.0.0', type: 'output' },
-        { id: 'init-2', text: 'Type a git command to begin. (Try "help", "git status", "git log")', type: 'output' }
+        { id: `init-1-${Date.now()}`, text: 'Git Visualised v1.0.0', type: 'output' },
+        { id: `init-2-${Date.now()}`, text: 'Type a git command to begin. (Try "help", "git status", "git log")', type: 'output' }
       ]);
       setHistory([]);
       setHistoryIndex(-1);
@@ -172,7 +179,7 @@ const Terminal: React.FC = () => {
       playErrorSound();
     }
 
-    setLines(newLines);
+    setLines(newLines.slice(-100)); // Cap to 100 lines
   };
 
   const focusInput = () => {
@@ -188,6 +195,21 @@ const Terminal: React.FC = () => {
           <span className={styles.controlMaximize}></span>
         </div>
         <div className={styles.windowTitle}>bash — 80x24</div>
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            const text = lines.map(l => l.type === 'input' ? l.text : l.text).join('\n');
+            navigator.clipboard.writeText(text);
+          }}
+          style={{ 
+            background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', 
+            fontSize: '0.75rem', position: 'absolute', right: '16px', display: 'flex', alignItems: 'center', gap: '4px' 
+          }}
+          title="Copy output"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          Copy
+        </button>
       </div>
       <div className={styles.terminalBody}>
         {lines.map((line) => (

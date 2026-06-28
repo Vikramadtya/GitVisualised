@@ -34,7 +34,7 @@ const REBASE_GRAPH: GraphState = {
   workingDirectory: []
 };
 
-const CompareMergeRebase: React.FC = () => {
+const CompareMergeRebase: React.FC = React.memo(() => {
   return (
     <div className={styles.container}>
       <div className={styles.column}>
@@ -58,6 +58,6 @@ const CompareMergeRebase: React.FC = () => {
       </div>
     </div>
   );
-};
+});
 
 export default CompareMergeRebase;

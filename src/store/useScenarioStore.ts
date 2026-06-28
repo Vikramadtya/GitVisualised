@@ -73,7 +73,7 @@ export const useScenarioStore = create<ScenarioStore>()(
             // Fail
             return { 
               success: false, 
-              output: `bash: syntax error or unexpected command. Expected something like: ${step.instructionMarkdown.split('\`')[1]}` 
+              output: `bash: command not found or incorrect syntax. Please review the instructions.` 
             };
           }
         },
@@ -115,6 +115,29 @@ export const useScenarioStore = create<ScenarioStore>()(
     },
     {
       name: 'git-visualised-storage', // unique name for localStorage key
+      partialize: (state) => ({
+        activeScenarioIndex: state.activeScenarioIndex,
+        activeStepIndex: state.activeStepIndex,
+        isCompleted: state.isCompleted
+      }),
+      onRehydrateStorage: () => (state, error) => {
+        if (state && !error) {
+          const scenario = scenarios[state.activeScenarioIndex];
+          if (scenario) {
+            const targetGraph = state.activeStepIndex === 0 
+              ? scenario.initialGraph 
+              : (scenario.steps[state.activeStepIndex - 1]?.resultingGraph || scenario.initialGraph);
+            // Since we can't easily call set() here without having access to it outside the create scope in this signature,
+            // we can mutate the state directly during rehydration (Zustand v4 allows mutating in onRehydrateStorage callback 
+            // since it's merged afterwards, wait no, mutating `state` here actually works because it is the Draft object if immer is used, but we are not using immer.)
+            // Actually, the simplest way is to export the store and call setState in a separate useEffect, or just use `useScenarioStore.setState`.
+            // But since we are INSIDE the create, we can just use `setTimeout` to update it.
+            setTimeout(() => {
+              useScenarioStore.setState({ graph: targetGraph });
+            }, 0);
+          }
+        }
+      }
     }
   )
 );
